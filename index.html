@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="نودا - صناعة المواقع الإلكترونية الفاخرة. نصنع لك موقعاً إلكترونياً فريداً ينمّي أعمالك ويعزز هويتك الرقمية باحترافية عالية.">
+    <title>نودا | Noda - صناعة المواقع الإلكترونية الفاخرة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        beige: {
+                            50: '#FDF8F0',
+                            100: '#F9F0E1',
+                            200: '#F3E4CC',
+                            300: '#EBCFA5',
+                            400: '#DDB87D',
+                            500: '#C9A066',
+                        },
+                        brand: {
+                            green: '#7BAE7F',
+                            'green-light': '#9DC49F',
+                            'green-dark': '#5A8E5E',
+                            'green-50': '#F0F7F1',
+                        },
+                        charcoal: {
+                            900: '#1A1A2E',
+                            800: '#2D2D44',
+                            700: '#3D3D5C',
+                            600: '#4A4A68',
+                        }
+                    },
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #FDF8F0;
+            color: #1A1A2E;
+            overflow-x: hidden;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F9F0E1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #7BAE7F;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #5A8E5E;
+        }
+
+        /* Timeline */
+        .timeline-line {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 50%;
+            width: 3px;
+            background: linear-gradient(180deg, #7BAE7F 0%, #9DC49F 50%, #7BAE7F 100%);
+            transform: translateX(50%);
+        }
+
+        .timeline-dot {
+            position: absolute;
+            right: 50%;
+            transform: translateX(50%);
+            width: 20px;
+            height: 20px;
+            background: #7BAE7F;
+            border: 4px solid #FDF8F0;
+            border-radius: 50%;
+            box-shadow: 0 0 0 3px #7BAE7F, 0 0 20px rgba(123, 174, 127, 0.3);
+            z-index: 2;
+        }
+
+        .timeline-item {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(123,174,127,0.2); }
+            50% { box-shadow: 0 0 40px rgba(123,174,127,0.4); }
+        }
+
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .animate-fade-in-right {
+            animation: fadeInRight 0.8s ease forwards;
+        }
+
+        .animate-fade-in-left {
+            animation: fadeInLeft 0.8s ease forwards;
+        }
+
+        .animate-scale-in {
+            animation: scaleIn 0.6s ease forwards;
+        }
+
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        .delay-400 { animation-delay: 0.4s; }
+        .delay-500 { animation-delay: 0.5s; }
+        .delay-600 { animation-delay: 0.6s; }
+
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #1A1A2E 0%, #5A8E5E 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Glass card */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        /* Button shimmer */
+        .btn-shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-shimmer::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+        .btn-shimmer:hover::after {
+            left: 100%;
+        }
+
+        /* WhatsApp float button */
+        .whatsapp-float {
+            animation: pulseGlow 2s infinite;
+        }
+
+        /* Section reveal */
+        .reveal-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .reveal-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Hero image container */
+        .hero-image-container {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+        }
+
+        .hero-image-container::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(123,174,127,0.1) 0%, rgba(253,248,240,0.05) 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Navbar */
+        .navbar-glass {
+            background: rgba(253, 248, 240, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(123, 174, 127, 0.15);
+        }
+
+        /* Card hover */
+        .why-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .why-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 60px rgba(123, 174, 127, 0.15);
+        }
+
+        /* Feature row hover */
+        .feature-row {
+            transition: all 0.3s ease;
+        }
+        .feature-row:hover {
+            background: rgba(123, 174, 127, 0.08);
+            padding-right: 2rem;
+        }
+
+        /* Mobile timeline */
+        @media (max-width: 768px) {
+            .timeline-line {
+                right: 24px;
+                transform: none;
+            }
+            .timeline-dot {
+                right: 24px;
+                transform: translateX(50%);
+            }
+        }
+
+        /* Decorative blob */
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        /* Footer gradient */
+        .footer-gradient {
+            background: linear-gradient(180deg, #1A1A2E 0%, #2D2D44 100%);
+        }
+    </style>
+</head>
+<body class="font-cairo">
+
+    <!-- ========== NAVBAR ========== -->
+    <nav class="navbar-glass fixed top-0 left-0 right-0 z-50 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 sm:h-20">
+                <!-- Logo -->
+                <div class="flex items-center gap-2">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-brand-green to-brand-green-dark flex items-center justify-center shadow-lg">
+                        <span class="text-white font-bold text-lg sm:text-xl">N</span>
+                    </div>
+                    <div>
+                        <span class="text-charcoal-900 font-bold text-lg sm:text-xl">نودا</span>
+                        <span class="text-brand-green text-xs block -mt-1 font-medium">Noda</span>
+                    </div>
+                </div>
+
+                <!-- Nav Links (Desktop) -->
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#hero" class="text-charcoal-700 hover:text-brand-green transition-colors font-medium">الرئيسية</a>
+                    <a href="#timeline" class="text-charcoal-700 hover:text-brand-green transition-colors font-medium">مراحل العمل</a>
+                    <a href="#product" class="text-charcoal-700 hover:text-brand-green transition-colors font-medium">خدماتنا</a>
+                    <a href="#features" class="text-charcoal-700 hover:text-brand-green transition-colors font-medium">المميزات</a>
+                </div>
+
+                <!-- CTA Button (Desktop) -->
+                <a href="https://wa.me/962788809843" target="_blank" class="hidden md:flex items-center gap-2 bg-brand-green hover:bg-brand-green-dark text-white px-6 py-2.5 rounded-full font-semibold transition-all duration-300 btn-shimmer shadow-lg shadow-brand-green/20">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    <span>تواصل معنا</span>
+                </a>
+
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-beige-100 text-charcoal-700" id="menuBtn" aria-label="فتح القائمة">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden bg-beige-50 border-t border-beige-200 shadow-xl" id="mobileMenu">
+            <div class="px-4 py-4 space-y-3">
+                <a href="#hero" class="block text-charcoal-700 hover:text-brand-green transition-colors font-medium py-2 mobile-link">الرئيسية</a>
+                <a href="#timeline" class="block text-charcoal-700 hover:text-brand-green transition-colors font-medium py-2 mobile-link">مراحل العمل</a>
+                <a href="#product" class="block text-charcoal-700 hover:text-brand-green transition-colors font-medium py-2 mobile-link">خدماتنا</a>
+                <a href="#features" class="block text-charcoal-700 hover:text-brand-green transition-colors font-medium py-2 mobile-link">المميزات</a>
+                <a href="https://wa.me/962788809843" target="_blank" class="flex items-center justify-center gap-2 bg-brand-green text-white px-6 py-3 rounded-full font-semibold mt-2">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    تواصل معنا
+                </a>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- ========== PAGE 1: HERO SECTION ========== -->
+    <section id="hero" class="min-h-screen flex items-center pt-20 sm:pt-24 pb-12 relative overflow-hidden">
+        <!-- Background blobs -->
+        <div class="blob w-96 h-96 bg-brand-green top-20 -left-40"></div>
+        <div class="blob w-80 h-80 bg-beige-400 bottom-20 right-0"></div>
+        <div class="blob w-64 h-64 bg-brand-green-light top-1/2 left-1/3"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+            <div class="flex flex-col-reverse lg:flex-row items-center gap-8 lg:gap-16">
+
+                <!-- Left Block: Text Content -->
+                <div class="w-full lg:w-1/2 text-right animate-fade-in-right" style="opacity:0; animation-fill-mode: forwards; animation-delay: 0.3s;">
+                    <!-- Badge -->
+                    <div class="inline-flex items-center gap-2 bg-brand-green-50 border border-brand-green/20 rounded-full px-5 py-2 mb-6 shadow-sm">
+                        <div class="w-2 h-2 rounded-full bg-brand-green animate-pulse"></div>
+                        <span class="text-brand-green-dark font-semibold text-sm">الريادة في التصميم والتطوير</span>
+                    </div>
+
+                    <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-[3.4rem] font-extrabold leading-tight mb-6 gradient-text">
+                        نصمم مستقبلك الرقمي<br>بمعايير عالمية فاخرة
+                    </h1>
+
+                    <p class="text-charcoal-600 text-lg sm:text-xl leading-relaxed mb-8 max-w-lg mr-0">
+                        لا نبرمج المواقع فحسب، بل نصنع تجارب رقمية متكاملة. ندمج الفن والإبداع مع أحدث التقنيات لنقدم لك منصة ذكية تضاعف مبيعاتك وتليق بمكانة علامتك التجارية.
+                    </p>
+
+                    <a href="https://wa.me/962788809843" target="_blank" class="inline-flex items-center gap-3 bg-brand-green hover:bg-brand-green-dark text-white px-8 py-4 rounded-2xl font-bold text-lg transition-all duration-300 btn-shimmer shadow-xl shadow-brand-green/25 hover:shadow-brand-green/40 hover:-translate-y-1">
+                        <span>تحدث مع خبرائنا الآن</span>
+                        <svg class="w-5 h-5 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                    </a>
+
+                    <!-- Stats -->
+                    <div class="flex items-center gap-8 mt-10">
+                        <div class="text-center">
+                            <span class="text-2xl sm:text-3xl font-extrabold text-brand-green">+١٠٠</span>
+                            <p class="text-charcoal-600 text-sm mt-1 font-medium">مشروع رائد</p>
+                        </div>
+                        <div class="w-px h-12 bg-beige-300"></div>
+                        <div class="text-center">
+                            <span class="text-2xl sm:text-3xl font-extrabold text-brand-green">١٠٠٪</span>
+                            <p class="text-charcoal-600 text-sm mt-1 font-medium">تقييم الامتياز</p>
+                        </div>
+                        <div class="w-px h-12 bg-beige-300"></div>
+                        <div class="text-center">
+                            <span class="text-2xl sm:text-3xl font-extrabold text-brand-green">٢٤/٧</span>
+                            <p class="text-charcoal-600 text-sm mt-1 font-medium">شراكة مستدامة</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Block: Portfolio Grid with Brand Overlay -->
+                <div class="w-full lg:w-1/2 animate-fade-in-left" style="opacity:0; animation-fill-mode: forwards; animation-delay: 0.1s;">
+                    <div class="relative rounded-3xl overflow-hidden shadow-2xl shadow-charcoal-900/10">
+                        <!-- Seamless 3x2 Image Grid -->
+                        <div class="grid grid-cols-3 grid-rows-2" style="gap:0;">
+                            <img src="WhatsApp Image 2026-06-26 at 11.36.06 AM (1).jpeg" 
+                                 alt="نموذج موقع - موقع سفر" 
+                                 class="w-full h-full object-cover aspect-[3/4]"
+                                 loading="eager">
+                            <img src="WhatsApp Image 2026-06-26 at 11.36.06 AM.jpeg" 
+                                 alt="نموذج موقع - كافيه" 
+                                 class="w-full h-full object-cover aspect-[3/4]"
+                                 loading="eager">
+                            <img src="WhatsApp Image 2026-06-26 at 11.36.07 AM (1).jpeg" 
+                                 alt="نموذج موقع - متجر أزياء" 
+                                 class="w-full h-full object-cover aspect-[3/4]"
+                                 loading="eager">
+                            <img src="WhatsApp Image 2026-06-26 at 11.36.07 AM.jpeg" 
+                                 alt="نموذج موقع - منصة تعليمية" 
+                                 class="w-full h-full object-cover aspect-[3/4]"
+                                 loading="eager">
+                            <img src="WhatsApp Image 2026-06-26 at 11.36.08 AM (1).jpeg" 
+                                 alt="نموذج موقع - عيادة طبية" 
+                                 class="w-full h-full object-cover aspect-[3/4]"
+                                 loading="eager">
+                            <img src="WhatsApp Image 2026-06-26 at 11.36.08 AM.jpeg" 
+                                 alt="نموذج موقع - مدرسة أونلاين" 
+                                 class="w-full h-full object-cover aspect-[3/4]"
+                                 loading="eager">
+                        </div>
+
+                        <!-- Dark overlay for text readability -->
+                        <div class="absolute inset-0 bg-gradient-to-b from-charcoal-900/50 via-charcoal-900/40 to-charcoal-900/60"></div>
+
+                        <!-- Big Brand Name Overlay -->
+                        <div class="absolute inset-0 flex flex-col items-center justify-center z-10">
+                            <span class="text-white font-extrabold text-6xl sm:text-7xl md:text-8xl tracking-wide drop-shadow-2xl" style="text-shadow: 0 4px 30px rgba(0,0,0,0.4);">نودا</span>
+                            <div class="flex items-center gap-3 mt-2">
+                                <div class="h-px w-10 sm:w-16 bg-white/50"></div>
+                                <span class="text-white/90 font-bold text-2xl sm:text-3xl md:text-4xl tracking-widest" style="text-shadow: 0 2px 15px rgba(0,0,0,0.3);">Noda</span>
+                                <div class="h-px w-10 sm:w-16 bg-white/50"></div>
+                            </div>
+                            <p class="text-white/70 text-sm sm:text-base mt-4 font-medium tracking-wide">وكالة تطوير مواقع احترافية</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ========== PAGE 2: TIMELINE SECTION ========== -->
+    <section id="timeline" class="py-20 sm:py-28 relative overflow-hidden">
+        <!-- Background -->
+        <div class="absolute inset-0 bg-gradient-to-b from-beige-50 via-white to-beige-50"></div>
+        <div class="blob w-72 h-72 bg-brand-green top-1/4 -right-32"></div>
+        <div class="blob w-56 h-56 bg-beige-400 bottom-1/4 -left-20"></div>
+
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <!-- Header -->
+            <div class="text-center mb-16 sm:mb-20 reveal-section">
+                <div class="inline-flex items-center gap-2 bg-brand-green-50 border border-brand-green/20 rounded-full px-5 py-2 mb-4">
+                    <svg class="w-4 h-4 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    <span class="text-brand-green-dark font-semibold text-sm">رحلتك معنا</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold gradient-text">مراحل صنع الموقع النهائي</h2>
+            </div>
+
+            <!-- Timeline -->
+            <div class="relative">
+                <!-- Vertical Line -->
+                <div class="timeline-line"></div>
+
+                <!-- Timeline Items -->
+                <!-- Item 1 -->
+                <div class="relative mb-12 sm:mb-16 timeline-item">
+                    <div class="timeline-dot" style="top: 24px;"></div>
+                    <div class="flex flex-col md:flex-row items-start">
+                        <div class="w-full md:w-1/2 md:pl-12 pr-12 md:pr-16">
+                            <div class="glass-card rounded-2xl p-6 sm:p-8 hover:shadow-xl transition-all duration-300 group">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <div class="w-10 h-10 rounded-xl bg-brand-green/10 flex items-center justify-center group-hover:bg-brand-green group-hover:text-white transition-all duration-300">
+                                        <svg class="w-5 h-5 text-brand-green group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                                    </div>
+                                    <span class="text-brand-green font-bold text-lg">المرحلة الأولى</span>
+                                </div>
+                                <p class="text-charcoal-800 font-bold text-lg mb-2">١. استكشاف الخدمة</p>
+                                <p class="text-charcoal-600 leading-relaxed">تتعرف على حلولنا الرقمية المبتكرة.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="relative mb-12 sm:mb-16 timeline-item">
+                    <div class="timeline-dot" style="top: 24px;"></div>
+                    <div class="flex flex-col md:flex-row items-start md:justify-end">
+                        <div class="w-full md:w-1/2 pr-12 md:pr-16 md:pl-12">
+                        </div>
+                        <div class="w-full md:w-1/2 pl-12 md:pl-16 pr-12 md:pr-0">
+                            <div class="glass-card rounded-2xl p-6 sm:p-8 hover:shadow-xl transition-all duration-300 group">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <div class="w-10 h-10 rounded-xl bg-brand-green/10 flex items-center justify-center group-hover:bg-brand-green transition-all duration-300">
+                                        <svg class="w-5 h-5 text-brand-green group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                    </div>
+                                    <span class="text-brand-green font-bold text-lg">المرحلة الثانية</span>
+                                </div>
+                                <p class="text-charcoal-800 font-bold text-lg mb-2">٢. تقديم الطلب</p>
+                                <p class="text-charcoal-600 leading-relaxed">نناقش رؤيتك وأهداف مشروعك بدقة.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="relative mb-12 sm:mb-16 timeline-item">
+                    <div class="timeline-dot" style="top: 24px;"></div>
+                    <div class="flex flex-col md:flex-row items-start">
+                        <div class="w-full md:w-1/2 md:pl-12 pr-12 md:pr-16">
+                            <div class="glass-card rounded-2xl p-6 sm:p-8 hover:shadow-xl transition-all duration-300 group">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <div class="w-10 h-10 rounded-xl bg-brand-green/10 flex items-center justify-center group-hover:bg-brand-green transition-all duration-300">
+                                        <svg class="w-5 h-5 text-brand-green group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/></svg>
+                                    </div>
+                                    <span class="text-brand-green font-bold text-lg">المرحلة الثالثة</span>
+                                </div>
+                                <p class="text-charcoal-800 font-bold text-lg mb-2">٣. الهندسة المبدئية</p>
+                                <p class="text-charcoal-600 leading-relaxed">نطور نموذجاً أولياً ونناقش تفاصيله وتجربة المستخدم معك.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 4 -->
+                <div class="relative mb-12 sm:mb-16 timeline-item">
+                    <div class="timeline-dot" style="top: 24px;"></div>
+                    <div class="flex flex-col md:flex-row items-start md:justify-end">
+                        <div class="w-full md:w-1/2 pr-12 md:pr-16 md:pl-12">
+                        </div>
+                        <div class="w-full md:w-1/2 pl-12 md:pl-16 pr-12 md:pr-0">
+                            <div class="glass-card rounded-2xl p-6 sm:p-8 hover:shadow-xl transition-all duration-300 group">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <div class="w-10 h-10 rounded-xl bg-brand-green/10 flex items-center justify-center group-hover:bg-brand-green transition-all duration-300">
+                                        <svg class="w-5 h-5 text-brand-green group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/></svg>
+                                    </div>
+                                    <span class="text-brand-green font-bold text-lg">المرحلة الرابعة</span>
+                                </div>
+                                <p class="text-charcoal-800 font-bold text-lg mb-2">٤. التصميم البصري</p>
+                                <p class="text-charcoal-600 leading-relaxed">نبتكر الواجهات النهائية بألوان وهوية بصرية ساحرة.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 5 -->
+                <div class="relative mb-12 sm:mb-16 timeline-item">
+                    <div class="timeline-dot" style="top: 24px;"></div>
+                    <div class="flex flex-col md:flex-row items-start">
+                        <div class="w-full md:w-1/2 md:pl-12 pr-12 md:pr-16">
+                            <div class="glass-card rounded-2xl p-6 sm:p-8 hover:shadow-xl transition-all duration-300 group">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <div class="w-10 h-10 rounded-xl bg-brand-green/10 flex items-center justify-center group-hover:bg-brand-green transition-all duration-300">
+                                        <svg class="w-5 h-5 text-brand-green group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                                    </div>
+                                    <span class="text-brand-green font-bold text-lg">المرحلة الخامسة</span>
+                                </div>
+                                <p class="text-charcoal-800 font-bold text-lg mb-2">٥. التطوير والبرمجة</p>
+                                <p class="text-charcoal-600 leading-relaxed">نحول التصاميم إلى كود برمجي سريع، آمن، ومتجاوب.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 6 -->
+                <div class="relative timeline-item">
+                    <div class="timeline-dot" style="top: 24px;"></div>
+                    <div class="flex flex-col md:flex-row items-start md:justify-end">
+                        <div class="w-full md:w-1/2 pr-12 md:pr-16 md:pl-12">
+                        </div>
+                        <div class="w-full md:w-1/2 pl-12 md:pl-16 pr-12 md:pr-0">
+                            <div class="glass-card rounded-2xl p-6 sm:p-8 hover:shadow-xl transition-all duration-300 group border-2 border-brand-green/20">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <div class="w-10 h-10 rounded-xl bg-brand-green flex items-center justify-center">
+                                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+                                    </div>
+                                    <span class="text-brand-green font-bold text-lg">المرحلة السادسة</span>
+                                </div>
+                                <p class="text-charcoal-800 font-bold text-lg mb-2">٦. الإطلاق والتسليم</p>
+                                <p class="text-charcoal-600 leading-relaxed">نطلق موقعك رسمياً في السوق ونسلّمك لوحة التحكم بالكامل لتنطلق بثقة.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ========== PAGE 3: PRODUCT & WHY US ========== -->
+    <section id="product" class="py-20 sm:py-28 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-beige-50 to-white"></div>
+        <div class="blob w-80 h-80 bg-brand-green bottom-0 left-1/4"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+            <!-- Top Block: Product Showcase -->
+            <div class="text-center mb-16 sm:mb-20 reveal-section">
+                <div class="inline-flex items-center gap-2 bg-brand-green-50 border border-brand-green/20 rounded-full px-5 py-2 mb-4">
+                    <svg class="w-4 h-4 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    <span class="text-brand-green-dark font-semibold text-sm">النتيجة النهائية</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold gradient-text mb-6">موقعك سيصبح جاهزاً ومكتمل الأركان</h2>
+            </div>
+
+            <!-- Product image -->
+            <div class="reveal-section mb-20 sm:mb-28">
+                <div class="relative max-w-4xl mx-auto">
+                    <div class="bg-gradient-to-br from-beige-100 via-white to-brand-green-50 rounded-3xl p-6 sm:p-10 shadow-2xl shadow-charcoal-900/5">
+                        <div class="flex flex-col sm:flex-row items-center gap-6">
+                            <!-- Laptop -->
+                            <div class="flex-1">
+                                <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?w=700&q=80" 
+                                     alt="موقع ويب احترافي على شاشة لابتوب"
+                                     class="w-full rounded-2xl shadow-xl object-cover aspect-[16/10]"
+                                     loading="lazy">
+                            </div>
+                            <!-- Phone -->
+                            <div class="w-32 sm:w-36 flex-shrink-0">
+                                <div class="bg-charcoal-900 rounded-[2rem] p-2 shadow-2xl">
+                                    <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=300&q=80" 
+                                         alt="موقع ويب متجاوب على الجوال"
+                                         class="w-full rounded-[1.5rem] object-cover aspect-[9/19]"
+                                         loading="lazy">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Decorative elements -->
+                    <div class="absolute -top-4 -right-4 w-20 h-20 border-2 border-brand-green/20 rounded-2xl"></div>
+                    <div class="absolute -bottom-4 -left-4 w-16 h-16 bg-brand-green/10 rounded-full"></div>
+                </div>
+            </div>
+
+
+            <!-- Bottom Block: Why Us -->
+            <div class="reveal-section">
+                <div class="text-center mb-12 sm:mb-16">
+                    <div class="inline-flex items-center gap-2 bg-brand-green-50 border border-brand-green/20 rounded-full px-5 py-2 mb-4">
+                        <svg class="w-4 h-4 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                        <span class="text-brand-green-dark font-semibold text-sm">تميّزنا</span>
+                    </div>
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold gradient-text">لماذا نحن؟</h2>
+                    <p class="text-charcoal-600 text-lg mt-3">ولماذا نودا هي خيارك الأمثل؟</p>
+                </div>
+
+                <!-- Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+
+                    <!-- Card 1 -->
+                    <div class="why-card glass-card rounded-3xl p-6 sm:p-8 text-right">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-green to-brand-green-dark flex items-center justify-center mb-5 shadow-lg shadow-brand-green/20">
+                            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        </div>
+                        <h3 class="text-charcoal-900 font-bold text-xl mb-3">القيمة الاستثنائية مقابل الاستثمار</h3>
+                        <p class="text-charcoal-600 leading-relaxed">
+                            نقدم لك باقات شاملة وأسعاراً تنافسية تناسب تطلعاتك، لتضمن أعلى عائد على استثمارك الرقمي دون تكاليف خفية.
+                        </p>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="why-card glass-card rounded-3xl p-6 sm:p-8 text-right">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-green to-brand-green-dark flex items-center justify-center mb-5 shadow-lg shadow-brand-green/20">
+                            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                        </div>
+                        <h3 class="text-charcoal-900 font-bold text-xl mb-3">إبداع بشري حقيقي.. لسنا ذكاءً اصطناعياً</h3>
+                        <p class="text-charcoal-600 leading-relaxed">
+                            تصاميمنا نابعة من فهم عميق لسلوك عملائك الحقيقيين واستراتيجيات السوق، وليست مجرد قوالب جامدة ومكررة يولدها الذكاء الاصطناعي.
+                        </p>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="why-card glass-card rounded-3xl p-6 sm:p-8 text-right">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-green to-brand-green-dark flex items-center justify-center mb-5 shadow-lg shadow-brand-green/20">
+                            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                        </div>
+                        <h3 class="text-charcoal-900 font-bold text-xl mb-3">دعم فني مستمر وإدارة مرنة</h3>
+                        <p class="text-charcoal-600 leading-relaxed">
+                            نحن معك خطوة بخطوة، نوفر لك لوحة تحكم بسيطة جداً لإدارة موقعك، بجانب دعم فني متكامل يضمن استقرار عملك.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ========== PAGE 4: VALUE / FEATURES GRID ========== -->
+    <section id="features" class="py-20 sm:py-28 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-white via-beige-50 to-beige-100"></div>
+        <div class="blob w-64 h-64 bg-brand-green top-1/3 right-0"></div>
+
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <!-- Header -->
+            <div class="text-center mb-12 sm:mb-16 reveal-section">
+                <div class="inline-flex items-center gap-2 bg-brand-green-50 border border-brand-green/20 rounded-full px-5 py-2 mb-4">
+                    <svg class="w-4 h-4 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                    <span class="text-brand-green-dark font-semibold text-sm">قيمة حقيقية</span>
+                </div>
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold gradient-text">ماذا يقدم لك موقعك الجديد؟</h2>
+            </div>
+
+            <!-- Features List -->
+            <div class="space-y-4 sm:space-y-5 reveal-section">
+
+                <!-- Feature 1 -->
+                <div class="feature-row glass-card rounded-2xl p-6 sm:p-8 flex items-start gap-4 sm:gap-6 text-right cursor-default">
+                    <div class="flex-shrink-0 w-12 h-12 rounded-2xl bg-brand-green/10 flex items-center justify-center mt-1">
+                        <svg class="w-6 h-6 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-charcoal-900 font-bold text-lg mb-1">زيادة المبيعات والأرباح</h3>
+                        <p class="text-charcoal-600 leading-relaxed">زيادة مبيعاتك وأرباحك من خلال واجهات مصممة خصيصاً لإقناع العميل وتحويله إلى مشتري.</p>
+                    </div>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="feature-row glass-card rounded-2xl p-6 sm:p-8 flex items-start gap-4 sm:gap-6 text-right cursor-default">
+                    <div class="flex-shrink-0 w-12 h-12 rounded-2xl bg-brand-green/10 flex items-center justify-center mt-1">
+                        <svg class="w-6 h-6 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-charcoal-900 font-bold text-lg mb-1">تعزيز العلامة التجارية</h3>
+                        <p class="text-charcoal-600 leading-relaxed">تغيير الصورة الذهنية لعلامتك التجارية ورفع قيمتها في السوق أمام المنافسين.</p>
+                    </div>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="feature-row glass-card rounded-2xl p-6 sm:p-8 flex items-start gap-4 sm:gap-6 text-right cursor-default">
+                    <div class="flex-shrink-0 w-12 h-12 rounded-2xl bg-brand-green/10 flex items-center justify-center mt-1">
+                        <svg class="w-6 h-6 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-charcoal-900 font-bold text-lg mb-1">تواجد رقمي شامل</h3>
+                        <p class="text-charcoal-600 leading-relaxed">التعريف الشامل بمحلك أو شركتك واستعراض خدماتك لعملائك الجدد على مدار الساعة.</p>
+                    </div>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="feature-row glass-card rounded-2xl p-6 sm:p-8 flex items-start gap-4 sm:gap-6 text-right cursor-default">
+                    <div class="flex-shrink-0 w-12 h-12 rounded-2xl bg-brand-green/10 flex items-center justify-center mt-1">
+                        <svg class="w-6 h-6 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"/></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-charcoal-900 font-bold text-lg mb-1">بناء ثقة مستدامة</h3>
+                        <p class="text-charcoal-600 leading-relaxed">تسهيل وتيسير التعامل الرقمي اليومي مع الزبائن وبناء جسور ثقة مستدامة.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA after features -->
+            <div class="text-center mt-12 sm:mt-16 reveal-section">
+                <a href="https://wa.me/966XXXXXXXXX" target="_blank" class="inline-flex items-center gap-3 bg-brand-green hover:bg-brand-green-dark text-white px-10 py-4 rounded-2xl font-bold text-lg transition-all duration-300 btn-shimmer shadow-xl shadow-brand-green/25 hover:shadow-brand-green/40 hover:-translate-y-1">
+                    <span>ابدأ مشروعك الآن</span>
+                    <svg class="w-5 h-5 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer-gradient text-white relative overflow-hidden">
+        <!-- Top CTA bar -->
+        <div class="border-b border-white/10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-right">
+                    <div>
+                        <h3 class="text-xl sm:text-2xl font-bold mb-2">تواصل معنا مباشرة عبر الواتساب لشراء موقعك</h3>
+                        <p class="text-white/60 text-sm">فريقنا جاهز للرد عليك والإجابة على جميع استفساراتك</p>
+                    </div>
+                    <a href="https://wa.me/962788809843" target="_blank" class="inline-flex items-center gap-3 bg-[#25D366] hover:bg-[#20BD5A] text-white px-8 py-4 rounded-2xl font-bold text-lg transition-all duration-300 btn-shimmer shadow-xl flex-shrink-0">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        <span>تواصل واتساب</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer bottom -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-brand-green flex items-center justify-center">
+                        <span class="text-white font-bold text-sm">N</span>
+                    </div>
+                    <span class="font-bold">نودا | Noda</span>
+                </div>
+                <p class="text-white/50 text-sm">جميع الحقوق محفوظة لـ نودا &copy; 2026</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bottom spacer for fixed WhatsApp button -->
+    <div class="h-0"></div>
+
+    <!-- Floating WhatsApp Button (Mobile) -->
+    <a href="https://wa.me/962788809843" target="_blank" class="md:hidden fixed bottom-6 left-6 z-50 w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center shadow-2xl whatsapp-float" aria-label="تواصل واتساب">
+        <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </a>
+
+
+    <!-- ========== JAVASCRIPT ========== -->
+    <script>
+        // ===== Mobile Menu Toggle =====
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu on link click
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // ===== Navbar Scroll Effect =====
+        const navbar = document.getElementById('navbar');
+        let lastScroll = 0;
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 50) {
+                navbar.classList.add('shadow-lg');
+                navbar.style.background = 'rgba(253, 248, 240, 0.95)';
+            } else {
+                navbar.classList.remove('shadow-lg');
+                navbar.style.background = 'rgba(253, 248, 240, 0.85)';
+            }
+
+            lastScroll = currentScroll;
+        });
+
+        // ===== Reveal Sections on Scroll =====
+        const revealSections = document.querySelectorAll('.reveal-section');
+        const timelineItems = document.querySelectorAll('.timeline-item');
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px 0px -80px 0px',
+            threshold: 0.15
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        revealSections.forEach(section => observer.observe(section));
+        timelineItems.forEach(item => observer.observe(item));
+
+        // ===== Smooth Scroll for Anchor Links =====
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offsetTop = target.offsetTop - 80;
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // ===== Active Nav Link Highlighting =====
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('nav a[href^="#"]');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionHeight = section.offsetHeight;
+                if (window.pageYOffset >= sectionTop && window.pageYOffset < sectionTop + sectionHeight) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('text-brand-green', 'font-bold');
+                link.classList.add('text-charcoal-700');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('text-brand-green', 'font-bold');
+                    link.classList.remove('text-charcoal-700');
+                }
+            });
+        });
+
+        // ===== Staggered Timeline Animation =====
+        const timelineObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 150);
+                    timelineObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            rootMargin: '0px 0px -50px 0px',
+            threshold: 0.1
+        });
+
+        document.querySelectorAll('.timeline-item').forEach(item => {
+            timelineObserver.observe(item);
+        });
+    </script>
+</body>
+</html>
